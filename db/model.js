@@ -20,7 +20,7 @@ const fetchCommentsForReview = (id) => {
     let queryStr = `SELECT * FROM comments WHERE review_id = ${id};`
 
     return db.query(queryStr).then((result) => {
-        console.log(result.rows)
+        //console.log(result.rows)
         return result.rows;
     })
 }
