@@ -21,9 +21,13 @@ describe("app tests", () => {
     })
     test("returns categories, containing properties of slug and description", () => {
         return request(app).get("/api/categories/").expect(200).then((response) => {
-            //console.log(response.body)
-           expect(response.body.categories[0]).toHaveProperty("slug");
-           expect(response.body.categories[0]).toHaveProperty("description");
+          const categoryObjs = response.body.categories;
+          expect(categoryObjs).toHaveLength(4);
+          categoryObjs.forEach((obj) => {
+            expect.objectContaining({slug: expect.any(String), description: expect.any(String)});
+            expect(obj).toHaveProperty("slug");
+            expect(obj).toHaveProperty("description")
+          })
         })
     })
 })
