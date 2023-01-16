@@ -8,4 +8,12 @@ const fetchCategories = () => {
     })
 }
 
-module.exports = { fetchCategories }
+const fetchReviews = () => {
+    let queryStr = `SELECT * FROM reviews;`
+
+    return db.query(queryStr).then((result) => {
+        return result.rows;
+    })
+}
+
+module.exports = { fetchCategories, fetchReviews }
