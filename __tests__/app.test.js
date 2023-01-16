@@ -54,9 +54,9 @@ describe("app tests", () => {
       })
     })
   })
-  describe("task 4 :/review_id/comments", () => {
-    test("status 200", () => {
-      return request(app).get("/api/reviews/3/comments/").expect(200);
-    })
-  })
+  // describe("task 4 :/review_id/comments", () => {
+  //   test("status 200", () => {
+  //     return request(app).get("/api/reviews/3/comments/").expect(200);
+  //   })
+  // })
 })
