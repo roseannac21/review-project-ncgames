@@ -1,7 +1,7 @@
 const db = require("../db/connection");
 const express = require("express");
 const app = express();
-const { getCategories } = require('../db/controller')
+const { getCategories, getReview } = require('../db/controller')
 
 app.use(express.json());
 
@@ -10,5 +10,7 @@ app.get("/api/", (request, response) => {
 });
 
 app.get("/api/categories/", getCategories);
+
+app.get("/api/reviews/:review_id", getReview);
 
 module.exports = app;

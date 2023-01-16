@@ -30,4 +30,14 @@ describe("app tests", () => {
           })
         })
     })
-})
+    test("status 200", () => {
+      return request(app).get("/api/reviews/5").expect(200);
+    })
+    test("review with id number from url is returned", () => {
+      return request(app).get("/api/reviews/5").expect(200).then((response) => {
+        const reviewObj = response.body.review
+        expect(reviewObj).toHaveLength(1);
+        expect.objectContaining({review_id: expect(5), title: expect('Proident tempor et.'), category: expect('social deduction'), designer: expect('Seymour Buttz'), owner: expect('mallionaire'), review_body: expect('Labore occaecat sunt qui commodo anim anim aliqua adipisicing aliquip fugiat. Ad in ipsum incididunt esse amet deserunt aliqua exercitation occaecat nostrud irure labore ipsum. Culpa tempor non voluptate reprehenderit deserunt pariatur cupidatat aliqua adipisicing. Nostrud labore dolor fugiat sint consequat excepteur dolore irure eu. Anim ex adipisicing magna deserunt enim fugiat do nulla officia sint. Ex tempor ut aliquip exercitation eiusmod. Excepteur deserunt officia voluptate sunt aliqua esse deserunt velit. In id non proident veniam ipsum id in consequat duis ipsum et incididunt. Qui cupidatat ea deserunt magna proident nisi nulla eiusmod aliquip magna deserunt fugiat fugiat incididunt. Laboris nisi velit mollit ullamco deserunt eiusmod deserunt ea dolore veniam.'), review_img_url: expect('https://images.pexels.com/photos/209728/pexels-photo-209728.jpeg?w=700&h=700'), created_at: expect('2021-01-07T09:06:08.077Z'), votes: expect(5)})
+        })
+      })
+    })
