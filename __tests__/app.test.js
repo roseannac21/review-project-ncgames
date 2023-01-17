@@ -80,6 +80,7 @@ describe("app tests", () => {
       })
     })
   })
+  
   describe("task 3 get review by id", () => {
     test("status 200", () => {
       return request(app).get("/api/reviews/5").expect(200);
@@ -99,6 +100,26 @@ describe("app tests", () => {
     test("error handling- invalid data type for review_id in url", () => {
       return request(app).get(("/api/reviews/hello/")).expect(400).then(({body}) => {
         expect(body.msg).toEqual("invalid data type")
+        })
+      })
+    })
+  
+    describe("task 4 get comments for specified review", () => {
+      test("status 200", () => {
+        return request(app).get("/api/reviews/3/comments/").expect(200);
+      })
+      test("returns the array of comments from the specified review_id", () => {
+        return request(app).get("/api/reviews/3/comments/").expect(200).then((response) => {
+          const commentsForReview = response.body.comments
+          expect(commentsForReview).toHaveLength(3);
+          commentsForReview.forEach((obj) => {
+            expect(obj.review_id).toBe(3);
+          })
+        })
+      })
+      test("error handling- 400- invalid data type for review_id", () => {
+        return request(app).get("/api/reviews/hello/comments/").expect(400).then(({body}) => {
+          expect(body.msg).toBe("invalid data type")
         })
       })
     })

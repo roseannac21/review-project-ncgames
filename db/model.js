@@ -30,4 +30,13 @@ const fetchReviewById = (id) => {
     })
 }
 
-module.exports = { fetchCategories, fetchReviews, fetchReviewById }
+const fetchCommentsForReview = (id) => {
+    let queryStr = `SELECT * FROM comments WHERE review_id = ${id};`
+
+    return db.query(queryStr).then(({rows}) => {
+        return rows;
+
+    })
+}
+
+module.exports = { fetchCategories, fetchReviews, fetchReviewById, fetchCommentsForReview }
