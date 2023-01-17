@@ -42,7 +42,7 @@ describe("app tests", () => {
       })
       test("error handling- valid data type but review_id doesn't exist", () => {
         return request(app).get("/api/reviews/5555555/").expect(404).then(({body}) => {
-          expect(body.msg).toEqual("invalid review ID")
+          expect(body.msg).toEqual("path not found")
         })
       })
       test("error handling- invalid data type for review_id in url", () => {

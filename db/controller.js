@@ -12,6 +12,9 @@ const getReview = (request, response, next) => {
   const reviewToGet = request.params.review_id;
  
   fetchReviewById(reviewToGet).then((review) => {
+    if (review.length === 0) {
+      next();
+    }
     response.status(200).send({ review });
   })
   .catch(next)
