@@ -68,6 +68,10 @@ describe("app tests", () => {
         })
       })
     })
-    //test("error handling- ")
+    // test("error handling- 400- invalid data type for review_id", () => {
+    //   return request(app).get("/api/reviews/hello/comments/").expect(400).then(({body}) => {
+    //     expect(body.msg).toBe()
+    //   })
+    // })
   })
 });
