@@ -5,9 +5,7 @@ const getCategories = (request, response, next) => {
     fetchCategories().then((categories) => {
         response.status(200).send({ categories });
       })
-      .catch((err) => {
-        console.log(err)
-      });
+      .catch(next)
 };
 
 const getReview = (request, response, next) => {
@@ -16,9 +14,7 @@ const getReview = (request, response, next) => {
   fetchReviewById(reviewToGet).then((review) => {
     response.status(200).send({ review });
   })
-  .catch((err) => {
-    console.log(err)
-  });
-}
+  .catch(next)
+};
 
 module.exports = { getCategories, getReview };
