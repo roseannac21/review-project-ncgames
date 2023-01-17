@@ -80,7 +80,7 @@ describe("app tests", () => {
       })
     })
   })
-  describe("task 3", () => {
+  describe("task 3 get review by id", () => {
     test("status 200", () => {
       return request(app).get("/api/reviews/5").expect(200);
     })
