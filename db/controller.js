@@ -1,4 +1,4 @@
-const { fetchCategories, fetchReviews } = require('../db/model');
+const { fetchCategories, fetchReviews, fetchCommentsForReview } = require('../db/model');
 const { response } = require('./app');
 
 const getCategories = (request, response, next) => {
@@ -28,9 +28,7 @@ const getCommentsForReview = (request, response, next) => {
   fetchCommentsForReview(reviewId).then((comments) => {
     response.status(200).send({ comments });
   })
-  .catch((err) => {
-    console.log(err)
-  });
+  .catch(next);
 }
 
 module.exports = { getCategories, getReviews, getCommentsForReview };

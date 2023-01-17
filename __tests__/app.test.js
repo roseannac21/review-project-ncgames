@@ -41,7 +41,8 @@ describe("app tests", () => {
         const reviewObjs = response.body.reviews;
         expect(reviewObjs).toHaveLength(13);
         reviewObjs.forEach((obj) => {
-          expect.objectContaining({title: expect.any(String), designer: expect.any(String), owner: expect.any(String), review_img_url: expect.any(String), review_body: expect.any(String), category: expect.any(String), created_at: expect.any(String), votes: expect.any(Number)});
+          expect(obj).toEqual(
+          expect.objectContaining({title: expect.any(String), designer: expect.any(String), owner: expect.any(String), review_img_url: expect.any(String), review_body: expect.any(String), category: expect.any(String), created_at: expect.any(String), votes: expect.any(Number)}));
           expect(obj).toHaveProperty("title");
           expect(obj).toHaveProperty("designer");
           expect(obj).toHaveProperty("owner");
@@ -54,9 +55,19 @@ describe("app tests", () => {
       })
     })
   })
-  // describe("task 4 :/review_id/comments", () => {
-  //   test("status 200", () => {
-  //     return request(app).get("/api/reviews/3/comments/").expect(200);
-  //   })
-  // })
-})
+  describe("task 4 :/review_id/comments", () => {
+    test("status 200", () => {
+      return request(app).get("/api/reviews/3/comments/").expect(200);
+    })
+    test("returns the array of comments from the specified review_id", () => {
+      return request(app).get("/api/reviews/3/comments/").expect(200).then((response) => {
+        const commentsForReview = response.body.comments
+        expect(commentsForReview).toHaveLength(3);
+        commentsForReview.forEach((obj) => {
+          expect(obj.review_id).toBe(3);
+        })
+      })
+    })
+    //test("error handling- ")
+  })
+});
