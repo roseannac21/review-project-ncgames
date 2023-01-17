@@ -16,13 +16,23 @@ const fetchReviews = () => {
     })
 }
 
-const fetchCommentsForReview = (id) => {
-    let queryStr = `SELECT * FROM comments WHERE review_id = ${id};`
+const fetchReviewById = (id) => {
+    //const parsedId = parseInt(id)
+    
+    // if (id > 24) {
+    //     return Promise.reject({status: 404, msg: "invalid review ID"})
+    // };
 
-    return db.query(queryStr).then((result) => {
-        console.log(result.rows)
-        return result.rows;
+    // if (isNaN(parsedId) === true) {
+    //     return Promise.reject({status: 400, msg: "invalid data type"})
+    // }
+
+    let queryStr = `SELECT * FROM reviews WHERE review_id = ${id};`
+
+    return db.query(queryStr).then(({rows}) => {
+        return rows;
+
     })
 }
 
-module.exports = { fetchCategories, fetchReviews, fetchCommentsForReview }
+module.exports = { fetchCategories, fetchReviews, fetchReviewById }
