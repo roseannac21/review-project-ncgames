@@ -41,6 +41,30 @@ describe("app tests", () => {
       return request(app).get("/api/reviews/").expect(200).then((response) => {
         const reviewObjs = response.body.reviews;
         expect(reviewObjs).toHaveLength(13);
+        expect(reviewObjs[0]).toEqual({
+          review_id: 7,
+          title: 'Mollit elit qui incididunt veniam occaecat cupidatat',
+          category: 'social deduction',
+          designer: 'Avery Wunzboogerz',
+          owner: 'mallionaire',
+          review_body: 'Consectetur incididunt aliquip sunt officia. Magna ex nulla consectetur laboris incididunt ea non qui. Enim id eiusmod irure dolor ipsum in tempor consequat amet ullamco. Occaecat fugiat sint fugiat mollit consequat pariatur consequat non exercitation dolore. Labore occaecat in magna commodo anim enim eiusmod eu pariatur ad duis magna. Voluptate ad et dolore ullamco anim sunt do. Qui exercitation tempor in in minim ullamco fugiat ipsum. Duis irure voluptate cupidatat do id mollit veniam culpa. Velit deserunt exercitation amet laborum nostrud dolore in occaecat minim amet nostrud sunt in. Veniam ut aliqua incididunt commodo sint in anim duis id commodo voluptate sit quis.',
+          review_img_url: 'https://images.pexels.com/photos/776657/pexels-photo-776657.jpeg?w=700&h=700',
+          created_at: '2021-01-25T11:16:54.963Z',
+          votes: 9,
+          comment_count: '0'
+        });
+        expect(reviewObjs[12]).toEqual({
+          review_id: 13,
+          title: "Settlers of Catan: Don't Settle For Less",
+          category: 'social deduction',
+          designer: 'Klaus Teuber',
+          owner: 'mallionaire',
+          review_body: 'You have stumbled across an uncharted island rich in natural resources, but you are not alone; other adventurers have come ashore too, and the race to settle the island of Catan has begun! Whether you exert military force, build a road to rival the Great Wall, trade goods with ships from the outside world, or some combination of all three, the aim is the same: to dominate the island. Will you prevail? Proceed strategically, trade wisely, and may the odds be in favour.',
+          review_img_url: 'https://images.pexels.com/photos/1153929/pexels-photo-1153929.jpeg?w=700&h=700',
+          created_at: '1970-01-10T02:08:38.400Z',
+          votes: 16,
+          comment_count: '0'
+        })
         reviewObjs.forEach((obj) => {
           expect.objectContaining({title: expect.any(String), designer: expect.any(String), owner: expect.any(String), review_img_url: expect.any(String), review_body: expect.any(String), category: expect.any(String), created_at: expect.any(String), votes: expect.any(Number)});
           expect(obj).toHaveProperty("title");
@@ -51,6 +75,7 @@ describe("app tests", () => {
           expect(obj).toHaveProperty("category");
           expect(obj).toHaveProperty("created_at");
           expect(obj).toHaveProperty("votes");
+          expect(obj).toHaveProperty("comment_count");
         })
       })
     })
