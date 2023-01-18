@@ -26,7 +26,6 @@ const fetchReviewById = (id) => {
 
     return db.query(queryStr).then(({rows}) => {
         return rows;
-
     })
 }
 
@@ -35,7 +34,6 @@ const fetchCommentsForReview = (id) => {
 
     return db.query(queryStr).then(({rows}) => {
         return rows;
-
     })
 }
 
