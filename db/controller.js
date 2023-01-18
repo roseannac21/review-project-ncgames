@@ -1,4 +1,4 @@
-const { fetchCategories, fetchReviews, fetchReviewById, addNewComment } = require('../db/model');
+const { fetchCategories, fetchReviews, fetchReviewById } = require('../db/model');
 
 const getCategories = (request, response, next) => {
 
@@ -43,16 +43,6 @@ const getReview = (request, response, next) => {
   .catch(next)
 };
 
-const postCommentById = (request, response, next) => {
-const reviewToCommentOn = request.params.review_id;
-  const commentAuthor = request.body.author;
-  const commentBody = request.body.body;
 
-  addNewComment(reviewToCommentOn, commentAuthor, commentBody).then((newComment) => {
-    response.status(201).send({ comment: newComment})    
-  })
 
- // response.status(201).send({ comment });
-}
-
-module.exports = { getCategories, getReviews, getReview, postCommentById };
+module.exports = { getCategories, getReviews, getReview };
