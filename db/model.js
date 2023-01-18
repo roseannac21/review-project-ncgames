@@ -24,15 +24,23 @@ const fetchReviews = () => {
 const fetchReviewById = (id) => {
    let queryStr = `SELECT * FROM reviews WHERE review_id = ${id};`
 
+   if (isNaN(id) || id === NaN) {
+    return Promise.reject({status: 400, msg: "invalid ID data type"})
+  }
+
     return db.query(queryStr).then(({rows}) => {
         return rows;
     })
 }
 
 const fetchCommentsForReview = (id) => {
-    let queryStr = `SELECT * FROM comments WHERE review_id = ${id};`
+    let queryStr = `SELECT * FROM comments WHERE review_id = $1;`
 
-    return db.query(queryStr).then(({rows}) => {
+  if (isNaN(id) || id === NaN) {
+    return Promise.reject({status: 400, msg: "invalid ID data type"})
+  }
+  
+    return db.query(queryStr, [id]).then(({rows}) => {
         return rows;
     })
 }

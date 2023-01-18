@@ -90,7 +90,7 @@ describe("app tests", () => {
       })
     test("error handling- invalid data type for review_id in url", () => {
       return request(app).get("/api/reviews/hello/").expect(400).then(({body}) => {
-        expect(body.msg).toEqual("invalid data type")
+        expect(body.msg).toEqual("invalid ID data type")
         })
       })
     })
@@ -108,9 +108,15 @@ describe("app tests", () => {
           })
         })
       })
+      test("status 200 when the review_id has no comment", () => {
+        return request(app).get("/api/reviews/10/comments/").expect(200).then((response) => {
+          const commentsForReview = response.body;
+          expect(commentsForReview).toHaveLength(0);
+        })
+      })
       test("error handling- 400- invalid data type for review_id", () => {
         return request(app).get("/api/reviews/hello/comments/").expect(400).then(({body}) => {
-          expect(body.msg).toBe("invalid data type")
+          expect(body.msg).toBe("invalid ID data type")
         })
       })
       test("error handling- 404- id number doesn't exist but is valid data type", () => {
@@ -121,7 +127,6 @@ describe("app tests", () => {
     })
 })
 
-  })
   
 
 

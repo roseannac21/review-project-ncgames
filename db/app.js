@@ -22,17 +22,15 @@ app.use((req, res, next) => {
 })
 
 app.use((err, req, res, next) => {
-    if (err.code === '42703') {
-      res.status(400).send({msg: "invalid data type"})
-    } else {
-    next(err);
-    }
-  });
+  if (err.status && err.msg) {
+    res.status(err.status).send({msg: err.msg});
+  }
+})
 
-  app.use((err, req, res, next) => {
-    if (err) {
-      console.log(err);
-    }
-  })
+  // app.use((err, req, res, next) => {
+  //   if (err) {
+  //     console.log(err);
+  //   }
+ // })
 
 module.exports = app;

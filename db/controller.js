@@ -14,12 +14,12 @@ const getReviews = (request, response, next) => {
   fetchReviews().then((reviews) => {
     response.status(200).send({ reviews });
   })
-    .catch(next)
+    .catch(next);
 };
 
 const getCommentsForReview = (request, response, next) => {
   const reviewId = request.params.review_id;
-  
+
 Promise.all([fetchCommentsForReview(reviewId), fetchReviewById(reviewId)]).then((comments) => {
     if (comments[0].length === 0 && comments[1].length === 0) {
       next();
