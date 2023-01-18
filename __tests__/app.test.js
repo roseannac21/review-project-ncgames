@@ -97,10 +97,25 @@ describe("app tests", () => {
         })
       })
     test("error handling- invalid data type for review_id in url", () => {
-      return request(app).get(("/api/reviews/hello/")).expect(400).then(({body}) => {
+      return request(app).get("/api/reviews/hello/").expect(400).then(({body}) => {
         expect(body.msg).toEqual("invalid data type")
         })
       })
     })
-})
+    
+    // describe.only("task 5 post request", () => {
+    //   test("status 201", () => {
+    //     return request(app).post("/api/reviews/7/comments").expect(201);
+    //   })
+    //   test("status 201 and comment is posted with all required properties", () => {
+    //     const newComment = {
+    //       author: "bainesface",
+    //       body: "test comment"
+    //     }
+    //     return request(app).post("/api/reviews/7/comments").expect(201).send(newComment).then(({body}) => {
+    //       console.log(body)
+    //     })
+      })
+//     })
+// })
 
