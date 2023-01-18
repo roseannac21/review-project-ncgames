@@ -89,7 +89,7 @@ describe("app tests", () => {
         })
       })
     test("error handling- invalid data type for review_id in url", () => {
-      return request(app).get(("/api/reviews/hello/")).expect(400).then(({body}) => {
+      return request(app).get("/api/reviews/hello/").expect(400).then(({body}) => {
         expect(body.msg).toEqual("invalid data type")
         })
       })
@@ -120,4 +120,8 @@ describe("app tests", () => {
       })
     })
 })
+
+  })
+  
+
 

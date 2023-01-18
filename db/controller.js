@@ -9,7 +9,6 @@ const getCategories = (request, response, next) => {
       .catch(next)
 };
 
-
 const getReviews = (request, response, next) => {
 
   fetchReviews().then((reviews) => {
