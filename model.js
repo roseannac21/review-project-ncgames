@@ -50,4 +50,15 @@ const fetchCommentsForReview = (id) => {
     })
 }
 
-module.exports = { fetchCategories, fetchReviews, fetchReviewById, fetchCommentsForReview, addNewComment }
+
+const updateVotes = (votes, id) => {
+    let queryStr = `UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING *;`
+
+    return db.query(queryStr, [votes, id]).then((response) => {
+        return response.rows;
+    })
+
+}
+
+module.exports = { fetchCategories, fetchReviews, fetchReviewById, fetchCommentsForReview, addNewComment, updateVotes }
+
