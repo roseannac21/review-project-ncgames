@@ -66,20 +66,12 @@ describe("app tests", () => {
           comment_count: '0'
         })
         reviewObjs.forEach((obj) => {
-          expect.objectContaining({title: expect.any(String), designer: expect.any(String), owner: expect.any(String), review_img_url: expect.any(String), review_body: expect.any(String), category: expect.any(String), created_at: expect.any(String), votes: expect.any(Number)});
-          expect(obj).toHaveProperty("title");
-          expect(obj).toHaveProperty("designer");
-          expect(obj).toHaveProperty("owner");
-          expect(obj).toHaveProperty("review_img_url");
-          expect(obj).toHaveProperty("review_body");
-          expect(obj).toHaveProperty("category");
-          expect(obj).toHaveProperty("created_at");
-          expect(obj).toHaveProperty("votes");
-          expect(obj).toHaveProperty("comment_count");
+          expect.objectContaining({title: expect.any(String), designer: expect.any(String), owner: expect.any(String), review_img_url: expect.any(String), review_body: expect.any(String), category: expect.any(String), created_at: expect.any(String), votes: expect.any(Number), comment_count: expect.any(Number)});
         })
       })
     })
   })
+  
   describe("task 3 get review by id", () => {
     test("status 200", () => {
       return request(app).get("/api/reviews/5").expect(200);
@@ -98,10 +90,44 @@ describe("app tests", () => {
       })
     test("error handling- invalid data type for review_id in url", () => {
       return request(app).get("/api/reviews/hello/").expect(400).then(({body}) => {
-        expect(body.msg).toEqual("invalid data type")
+        expect(body.msg).toEqual("invalid ID data type")
         })
       })
     })
+
+  
+    describe("task 4 get comments for specified review", () => {
+      test("status 200", () => {
+        return request(app).get("/api/reviews/3/comments/").expect(200);
+      })
+      test("returns the array of comments from the specified review_id", () => {
+        return request(app).get("/api/reviews/3/comments/").expect(200).then((response) => {
+          const commentsForReview = response.body;
+          expect(commentsForReview).toHaveLength(3);
+          commentsForReview.forEach((obj) => {
+            expect(obj.review_id).toBe(3);
+          })
+        })
+      })
+      test("status 200 when the review_id has no comment", () => {
+        return request(app).get("/api/reviews/10/comments/").expect(200).then((response) => {
+          const commentsForReview = response.body;
+          expect(commentsForReview).toHaveLength(0);
+        })
+      })
+      test("error handling- 400- invalid data type for review_id", () => {
+        return request(app).get("/api/reviews/hello/comments/").expect(400).then(({body}) => {
+          expect(body.msg).toBe("invalid ID data type")
+        })
+      })
+      test("error handling- 404- id number doesn't exist but is valid data type", () => {
+        return request(app).get("/api/reviews/99999/comments/").expect(404).then(({body}) => {
+          expect(body.msg).toBe("path not found");
+        })
+      })
+    })
+})
+
 
     describe("task 5 post request", () => {
       test("status 201", () => {
@@ -166,4 +192,7 @@ describe("app tests", () => {
     })
   })
 })
+
+
+
 

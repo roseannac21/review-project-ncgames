@@ -26,7 +26,6 @@ const fetchReviewById = (id) => {
 
     return db.query(queryStr).then(({rows}) => {
         return rows;
-
     })
 }
 
@@ -39,4 +38,16 @@ const addNewComment = (review_id, author, body) => {
     })
 }
 
-module.exports = { fetchCategories, fetchReviews, fetchReviewById, addNewComment }
+const fetchCommentsForReview = (id) => {
+    let queryStr = `SELECT * FROM comments WHERE review_id = $1;`
+
+  if (isNaN(id) || id === NaN) {
+    return Promise.reject({status: 400, msg: "invalid ID data type"})
+  }
+  
+    return db.query(queryStr, [id]).then(({rows}) => {
+        return rows;
+    })
+}
+
+module.exports = { fetchCategories, fetchReviews, fetchReviewById, fetchCommentsForReview, addNewComment }

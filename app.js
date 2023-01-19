@@ -1,7 +1,7 @@
 const db = require("./db/connection");
 const express = require("express");
 const app = express();
-const { getCategories, getReviews, getReview, postCommentById } = require('./controller')
+const { getCategories, getReviews, getReview, postCommentById, getCommentsForReview } = require('./controller')
 
 app.use(express.json());
 
@@ -17,9 +17,12 @@ app.get("/api/reviews/:review_id/", getReview);
 
 app.post("/api/reviews/:review_id/comments", postCommentById);
 
+app.get("/api/reviews/:review_id/comments/", getCommentsForReview);
+
 app.use((req, res, next) => {
   res.status(404).send({msg: "path not found"})
 })
+
 
 //psql error catching block
 app.use((err, req, res, next) => {
@@ -33,16 +36,19 @@ app.use((err, req, res, next) => {
   }
   });
 
+
 app.use((err, req, res, next) => {
   if (err.status && err.msg) {
     res.status(err.status).send({msg: err.msg});
   }
 })
 
+
 // app.use((err, req, res, next) => {
 //   if (err) {
 //     console.log(err)
 //   }
 // })
+
 
 module.exports = app;
