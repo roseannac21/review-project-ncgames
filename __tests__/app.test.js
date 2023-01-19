@@ -140,7 +140,7 @@ describe("app tests", () => {
         return request(app).patch("/api/reviews/1").expect(201).send(addVotes).then(({body}) => {
           expect(body.review).toHaveLength(1);
           expect(body.review[0].review_id).toBe(1);
-          expect(body.review[0].votes).toBe(3);
+          expect(body.review[0].votes).toBe(4);
         })
       })
       test("error handling- 404- invalid data type for review id", () => {
