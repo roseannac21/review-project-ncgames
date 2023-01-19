@@ -94,6 +94,7 @@ describe("app tests", () => {
         })
       })
     })
+
   
     describe("task 4 get comments for specified review", () => {
       test("status 200", () => {
@@ -170,6 +171,71 @@ describe("app tests", () => {
     })
 })
 
-  
+
+    describe("task 5 post request", () => {
+      test("status 201", () => {
+        const newComment = {
+          author: "bainesface",
+          body: "test comment"
+        }
+        return request(app).post("/api/reviews/3/comments").expect(201).send(newComment);
+      })
+      test("status 201 and comment is posted with all required properties", () => {
+        const newComment = {
+          author: "bainesface",
+          body: "test comment"
+        }
+        return request(app).post("/api/reviews/3/comments").expect(201).send(newComment).then(({body}) => {
+          const comment = body.comment
+          expect(comment).toHaveLength(1);
+          expect(comment[0]).toHaveProperty("comment_id");
+          expect(comment[0]).toHaveProperty("body");
+          expect(comment[0]).toHaveProperty("review_id");
+          expect(comment[0]).toHaveProperty("author");
+          expect(comment[0]).toHaveProperty("votes");
+          expect(comment[0]).toHaveProperty("created_at")
+        })
+      })
+      test("error handling- 404- valid data type but review id doesnt exist", () => {
+        const newComment = {
+          author: "bainesface",
+          body: "test comment"
+        }
+        return request(app).post("/api/reviews/99999/comments").expect(404).send(newComment).then(({body}) => {
+          //console.log(body)
+          expect(body.msg).toBe("not found")
+      })
+    })
+    test("error handing- 400- invalid path", () => {
+      const newComment = {
+        author: "bainesface",
+        body: "test comment"
+      }
+      return request(app).post("/api/reviews/hello/comments").expect(400).send(newComment).then(({body}) => {
+        expect(body.msg).toBe("invalid data type")        
+      })
+    })
+    test("error handling- 404- try to post comment without providing author", () => {
+      const newComment = {
+        author: "",
+        body: "test comment"
+      }
+      return request(app).post("/api/reviews/5/comments").expect(404).send(newComment).then(({body}) => {
+        expect(body.msg).toBe("not found")
+      })
+    })
+    test("error handling- 404- invalid keys", () => {
+      const newComment = {
+        person: "bainesface",
+        message: "this sucks"
+      }
+      return request(app).post("/api/reviews/5/comments").expect(404).send(newComment).then(({body}) => {
+        expect(body.msg).toBe("not found")
+      })
+    })
+  })
+})
+
+
 
 

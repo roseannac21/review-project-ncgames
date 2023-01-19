@@ -1,5 +1,4 @@
-//const { replicationStart } = require('pg-protocol/dist/messages');
-const { fetchCategories, fetchReviews, fetchReviewById, fetchCommentsForReview, updateVotes } = require('./model');
+const { fetchCategories, fetchReviews, fetchReviewById, addNewComment, fetchCommentsForReview, updateVotes } = require('./model');
 
 const getCategories = (request, response, next) => {
 
@@ -10,11 +9,12 @@ const getCategories = (request, response, next) => {
 };
 
 const getReviews = (request, response, next) => {
-
   fetchReviews().then((reviews) => {
     response.status(200).send({ reviews });
   })
-    .catch(next);
+    .catch((err) => {
+      console.log(err)
+    });
 };
 
 const getCommentsForReview = (request, response, next) => {
@@ -43,6 +43,17 @@ const getReview = (request, response, next) => {
   .catch(next)
 };
 
+const postCommentById = (request, response, next) => {
+  const reviewToCommentOn = request.params.review_id;
+    const commentAuthor = request.body.author;
+    const commentBody = request.body.body;
+  
+    addNewComment(reviewToCommentOn, commentAuthor, commentBody).then((newComment) => {
+      response.status(201).send({ comment: newComment })    
+    })
+    .catch(next);
+  }
+
 const patchVotes = (request, response, next) => {
   const reviewId = request.params.review_id;
   const noOfVotes = request.body.inc_votes;
@@ -57,4 +68,5 @@ const patchVotes = (request, response, next) => {
 
 }
 
-module.exports = { getCategories, getReviews, getReview, getCommentsForReview, patchVotes };
+module.exports = { getCategories, getReviews, getReview, getCommentsForReview, postCommentById, patchVotes };
+
