@@ -1,5 +1,5 @@
 //const { replicationStart } = require('pg-protocol/dist/messages');
-const { fetchCategories, fetchReviews, fetchReviewById, fetchCommentsForReview } = require('./model');
+const { fetchCategories, fetchReviews, fetchReviewById, fetchCommentsForReview, updateVotes } = require('./model');
 
 const getCategories = (request, response, next) => {
 
@@ -43,4 +43,18 @@ const getReview = (request, response, next) => {
   .catch(next)
 };
 
-module.exports = { getCategories, getReviews, getReview, getCommentsForReview };
+const patchVotes = (request, response, next) => {
+  const reviewId = request.params.review_id;
+  const noOfVotes = request.body.inc_votes;
+
+  updateVotes(noOfVotes, reviewId).then((review) => {
+    if (review.length === 0) {
+      next();
+    }
+    response.status(201).send({review})
+  })
+  .catch(next)
+
+}
+
+module.exports = { getCategories, getReviews, getReview, getCommentsForReview, patchVotes };
