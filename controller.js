@@ -49,7 +49,7 @@ const postCommentById = (request, response, next) => {
     const commentBody = request.body.body;
   
     addNewComment(reviewToCommentOn, commentAuthor, commentBody).then((newComment) => {
-      response.status(201).send({ comment: newComment})    
+      response.status(201).send({ comment: newComment })    
     })
   
    // response.status(201).send({ comment });
