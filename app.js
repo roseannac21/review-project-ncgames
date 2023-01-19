@@ -21,12 +21,16 @@ app.use((req, res, next) => {
   res.status(404).send({msg: "path not found"})
 })
 
+//psql error catching block
 app.use((err, req, res, next) => {
-    if (err.code === '42703') {
-      res.status(400).send({msg: "invalid data type"})
-    } else {
+  if (err.code === "23503" || err.code === '23502') {
+    res.status(404).send({msg: "not found"})
+  }
+  if (err.code === '42703' || err.code === '22P02') {
+    res.status(400).send({msg: "invalid data type"})
+  } else {
     next(err);
-    }
+  }
   });
 
 app.use((err, req, res, next) => {

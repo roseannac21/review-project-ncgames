@@ -51,9 +51,11 @@ const postCommentById = (request, response, next) => {
     addNewComment(reviewToCommentOn, commentAuthor, commentBody).then((newComment) => {
       response.status(201).send({ comment: newComment })    
     })
+    .catch(next);
   
    // response.status(201).send({ comment });
   }
+
 
 
 module.exports = { getCategories, getReviews, getReview, postCommentById };

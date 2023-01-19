@@ -34,10 +34,6 @@ const addNewComment = (review_id, author, body) => {
 
     let queryStr = `INSERT INTO comments (review_id, author, body) VALUES ($1, $2, $3) RETURNING *;`
 
-    if (isNaN(review_id) || review_id === NaN) {
-        return Promise.reject({status: 400, msg: "invalid ID data type"})
-    }
-
     return db.query(queryStr, [review_id, author, body]).then((response) => {
         return response.rows
     })
