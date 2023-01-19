@@ -16,7 +16,7 @@ beforeEach(() => {
   });
 
 describe("app tests", () => {
-  describe("task 1 get categories", () => {
+  describe("task 3 get categories", () => {
     test("status 200", () => {
         return request(app).get("/api/categories/").expect(200);
     })
@@ -33,7 +33,7 @@ describe("app tests", () => {
     })
   })
   
-  describe("task 2 get reviews", () => {
+  describe("task 4 get reviews", () => {
     test("status 200", () => {
       return request(app).get("/api/reviews/").expect(200);
     })
@@ -72,7 +72,7 @@ describe("app tests", () => {
     })
   })
   
-  describe("task 3 get review by id", () => {
+  describe("task 5 get review by id", () => {
     test("status 200", () => {
       return request(app).get("/api/reviews/5").expect(200);
     })
@@ -90,13 +90,13 @@ describe("app tests", () => {
       })
     test("error handling- invalid data type for review_id in url", () => {
       return request(app).get("/api/reviews/hello/").expect(400).then(({body}) => {
-        expect(body.msg).toEqual("invalid ID data type")
+        expect(body.msg).toEqual("invalid data type")
         })
       })
     })
 
   
-    describe("task 4 get comments for specified review", () => {
+    describe("task 6 get comments for specified review", () => {
       test("status 200", () => {
         return request(app).get("/api/reviews/3/comments/").expect(200);
       })
@@ -127,52 +127,7 @@ describe("app tests", () => {
       })
     })
 
-    describe.only("task 8 patch", () => {
-      test("201 status", () => {
-        const addVotes = {
-          inc_votes: 3
-        }
-        return request(app).patch("/api/reviews/1").expect(201).send(addVotes);
-      })
-      test("201 status and vote count updated", () => {
-        const addVotes = {
-          inc_votes: 3
-        }
-        return request(app).patch("/api/reviews/1").expect(201).send(addVotes).then(({body}) => {
-          expect(body.review).toHaveLength(1);
-          expect(body.review[0].review_id).toBe(1);
-          expect(body.review[0].votes).toBe(4);
-        })
-      })
-      test("error handling- 404- invalid data type for review id", () => {
-        const addVotes = {
-          inc_votes: 3
-        }
-        return request(app).patch("/api/reviews/99999/").expect(404).send(addVotes).then(({body}) => {
-          expect(body.msg).toBe("path not found")
-        })
-      })
-      test("error handling- 400- invalid path", () => {
-        const addVotes = {
-          inc_votes: 3
-        }
-        return request(app).patch("/api/reviews/hello/").expect(400).send(addVotes).then(({body}) => {
-          expect(body.msg).toBe("invalid data type")
-        })
-      })
-      test("error handling- 404- invalid key", () => {
-        const addVotes = {
-          votes_to_add: 3
-        }
-        return request(app).patch("/api/reviews/hello/").expect(400).send(addVotes).then(({body}) => {
-          expect(body.msg).toBe("invalid data type")
-        })
-      })
-    })
-})
-
-
-    describe("task 5 post request", () => {
+    describe("task 7 post request", () => {
       test("status 201", () => {
         const newComment = {
           author: "bainesface",
@@ -202,7 +157,6 @@ describe("app tests", () => {
           body: "test comment"
         }
         return request(app).post("/api/reviews/99999/comments").expect(404).send(newComment).then(({body}) => {
-          //console.log(body)
           expect(body.msg).toBe("not found")
       })
     })
@@ -234,8 +188,47 @@ describe("app tests", () => {
       })
     })
   })
+
+  describe("task 8 patch", () => {
+    test("201 status", () => {
+      const addVotes = {
+        inc_votes: 3
+      }
+      return request(app).patch("/api/reviews/1").expect(201).send(addVotes);
+    })
+    test("201 status and vote count updated", () => {
+      const addVotes = {
+        inc_votes: 3
+      }
+      return request(app).patch("/api/reviews/1").expect(201).send(addVotes).then(({body}) => {
+        expect(body.review).toHaveLength(1);
+        expect(body.review[0].review_id).toBe(1);
+        expect(body.review[0].votes).toBe(4);
+      })
+    })
+    test("error handling- 404- invalid data type for review id", () => {
+      const addVotes = {
+        inc_votes: 3
+      }
+      return request(app).patch("/api/reviews/99999/").expect(404).send(addVotes).then(({body}) => {
+        expect(body.msg).toBe("path not found")
+      })
+    })
+    test("error handling- 400- invalid path", () => {
+      const addVotes = {
+        inc_votes: 3
+      }
+      return request(app).patch("/api/reviews/hello/").expect(400).send(addVotes).then(({body}) => {
+        expect(body.msg).toBe("invalid data type")
+      })
+    })
+    test("error handling- 404- invalid key", () => {
+      const addVotes = {
+        votes_to_add: 3
+      }
+      return request(app).patch("/api/reviews/hello/").expect(400).send(addVotes).then(({body}) => {
+        expect(body.msg).toBe("invalid data type")
+      })
+    })
+  })
 })
-
-
-
-
