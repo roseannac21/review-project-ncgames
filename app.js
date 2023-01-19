@@ -1,7 +1,7 @@
-const db = require("../db/connection");
+const db = require("./db/connection");
 const express = require("express");
 const app = express();
-const { getCategories, getReviews, getReview, postCommentById } = require('../db/controller')
+const { getCategories, getReviews, getReview, postCommentById } = require('./controller')
 
 app.use(express.json());
 
@@ -28,5 +28,11 @@ app.use((err, req, res, next) => {
     next(err);
     }
   });
+
+app.use((err, req, res, next) => {
+  if (err) {
+    console.log(err)
+  }
+})
 
 module.exports = app;

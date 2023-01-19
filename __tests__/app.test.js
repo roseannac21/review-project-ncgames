@@ -1,4 +1,4 @@
-const app = require('../db/app')
+const app = require('../app')
 const request = require("supertest");
 const db = require("../db/connection");
 const categoryData = require("../db/data/test-data/categories");
@@ -103,20 +103,49 @@ describe("app tests", () => {
       })
     })
 
-    // describe.only("task 5 post request", () => {
-    //   test("status 201", () => {
-    //     return request(app).post("/api/reviews/7/comments").expect(201);
-    //   })
-    //   test("status 201 and comment is posted with all required properties", () => {
+    describe("task 5 post request", () => {
+      test("status 201", () => {
+        const newComment = {
+          author: "bainesface",
+          body: "test comment"
+        }
+        return request(app).post("/api/reviews/3/comments").expect(201).send(newComment);
+      })
+      test("status 201 and comment is posted with all required properties", () => {
+        const newComment = {
+          author: "bainesface",
+          body: "test comment"
+        }
+        return request(app).post("/api/reviews/3/comments").expect(201).send(newComment).then(({body}) => {
+          const comment = body.comment
+          expect(comment).toHaveLength(1);
+          expect(comment[0]).toHaveProperty("comment_id");
+          expect(comment[0]).toHaveProperty("body");
+          expect(comment[0]).toHaveProperty("review_id");
+          expect(comment[0]).toHaveProperty("author");
+          expect(comment[0]).toHaveProperty("votes");
+          expect(comment[0]).toHaveProperty("created_at")
+        })
+      })
+    //   test("error handling- 404- valid data type but review id doesnt exist", () => {
     //     const newComment = {
     //       author: "bainesface",
     //       body: "test comment"
     //     }
-    //     return request(app).post("/api/reviews/7/comments").expect(201).send(newComment).then(({body}) => {
+    //     return request(app).post("/api/reviews/99999/comments").expect(404).send(newComment).then(({body}) => {
     //       console.log(body)
-    //     })
+    //       expect(body.msg).toBe("path not found")
+    //   })
+    // })
+    // test.only("error handing- 400- invalid path", () => {
+    //   const newComment = {
+    //     author: "bainesface",
+    //     body: "test comment"
+    //   }
+    //   return request(app).post("/api/reviews/hello/comments").expect(400).send(newComment).then(({body}) => {
+    //     expect(body.msg).toBe("invalid data type")        
     //   })
     // })
   })
-
+})
 

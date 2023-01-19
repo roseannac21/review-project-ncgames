@@ -1,4 +1,4 @@
-const { fetchCategories, fetchReviews, fetchReviewById, addNewComment } = require('../db/model');
+const { fetchCategories, fetchReviews, fetchReviewById, addNewComment } = require('./model');
 
 const getCategories = (request, response, next) => {
 

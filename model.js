@@ -1,4 +1,4 @@
-const db = require("../db/connection");
+const db = require("./db/connection");
 
 const fetchCategories = () => {
     let queryStr = `SELECT * FROM categories;`
@@ -33,7 +33,9 @@ const fetchReviewById = (id) => {
 const addNewComment = (review_id, author, body) => {
     let queryStr = `INSERT INTO comments (review_id, author, body) VALUES ($1, $2, $3) RETURNING *;`
 
-    return db.query(queryStr, [review_id, author, body]).send({ commentObj })
+    return db.query(queryStr, [review_id, author, body]).then((response) => {
+        return response.rows
+    })
 }
 
 module.exports = { fetchCategories, fetchReviews, fetchReviewById, addNewComment }
