@@ -1,4 +1,4 @@
-const db = require("../db/connection");
+const db = require("./db/connection");
 
 const fetchCategories = () => {
     let queryStr = `SELECT * FROM categories;`

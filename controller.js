@@ -1,5 +1,5 @@
-const { replicationStart } = require('pg-protocol/dist/messages');
-const { fetchCategories, fetchReviews, fetchReviewById, fetchCommentsForReview } = require('../db/model');
+//const { replicationStart } = require('pg-protocol/dist/messages');
+const { fetchCategories, fetchReviews, fetchReviewById, fetchCommentsForReview } = require('./model');
 
 const getCategories = (request, response, next) => {
 

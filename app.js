@@ -1,7 +1,7 @@
-const db = require("../db/connection");
+const db = require("./db/connection");
 const express = require("express");
 const app = express();
-const { getCategories, getReviews, getReview, getCommentsForReview } = require('../db/controller')
+const { getCategories, getReviews, getReview, getCommentsForReview } = require('./controller')
 
 app.use(express.json());
 
