@@ -91,5 +91,13 @@ const updateVotes = (votes, id) => {
 
 }
 
-module.exports = { fetchCategories, fetchReviews, fetchReviewById, fetchCommentsForReview, addNewComment, updateVotes }
+const fetchUsers = () => {
+    let queryStr = `SELECT * FROM users;`
+
+    return db.query(queryStr).then((response) => {
+        return response.rows;
+    })
+}
+
+module.exports = { fetchCategories, fetchReviews, fetchReviewById, fetchCommentsForReview, addNewComment, updateVotes, fetchUsers }
 

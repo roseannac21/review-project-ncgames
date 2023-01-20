@@ -1,4 +1,4 @@
-const { fetchCategories, fetchReviews, fetchReviewById, addNewComment, fetchCommentsForReview, updateVotes } = require('./model');
+const { fetchCategories, fetchReviews, fetchReviewById, addNewComment, fetchCommentsForReview, updateVotes, fetchUsers } = require('./model');
 
 const getCategories = (request, response, next) => {
 
@@ -64,11 +64,20 @@ const patchVotes = (request, response, next) => {
     if (review.length === 0) {
       next();
     }
-    response.status(201).send({review})
+    const reviewInObj = {review}.review
+    const [reviewObj] = reviewInObj
+    response.status(201).send(reviewObj)
   })
   .catch(next)
 
 }
 
-module.exports = { getCategories, getReviews, getReview, getCommentsForReview, postCommentById, patchVotes };
+const getUsers = (request, response, next) => {
+
+  fetchUsers().then((users) => {
+    response.status(200).send({users})
+  })
+}
+
+module.exports = { getCategories, getReviews, getReview, getCommentsForReview, postCommentById, patchVotes, getUsers };
 

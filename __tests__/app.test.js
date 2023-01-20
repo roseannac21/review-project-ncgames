@@ -202,12 +202,11 @@ describe("app tests", () => {
         inc_votes: 3
       }
       return request(app).patch("/api/reviews/1").expect(201).send(addVotes).then(({body}) => {
-        expect(body.review).toHaveLength(1);
-        expect(body.review[0].review_id).toBe(1);
-        expect(body.review[0].votes).toBe(4);
+        expect(body.review_id).toBe(1);
+        expect(body.votes).toBe(4);
       })
     })
-    test("error handling- 404- invalid data type for review id", () => {
+    test("error handling- 404- review id doesnt exist", () => {
       const addVotes = {
         inc_votes: 3
       }
@@ -232,6 +231,7 @@ describe("app tests", () => {
       })
     })
   })
+
 
   describe("task 10 queries", () => {
     test("status 200", () => {
@@ -276,6 +276,23 @@ describe("app tests", () => {
     test("error handling- 400- invalid order query", () => {
       return request(app).get("/api/reviews?category=dexterity&sort_by=title&order=hello").expect(400).then(({body}) => {
         expect(body.msg).toBe("invalid order query");
+
+  describe("task 9 get users", () => {
+    test("status 200", () => {
+      return request(app).get("/api/users/").expect(200);
+    })
+    test("status 200 and responds with array of users", () => {
+      return request(app).get("/api/users/").expect(200).then(({body}) => {
+        const users = body.users
+        expect(users).toHaveLength(4);
+        users.forEach((user) => {
+          expect.objectContaining({username: expect.any(String), name: expect.any(String), avatar_url: expect.any(String)});
+        })
+      })
+    })
+    test("error handling- 404- invalid path in url", () => {
+      return request(app).get("/hello/").expect(404).then(({body}) => {
+        expect(body.msg).toBe("path not found")
       })
     })
   })
