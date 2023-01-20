@@ -6,8 +6,6 @@ const commentData = require('../db/data/test-data/comments');
 const reviewData = require('../db/data/test-data/reviews');
 const userData = require('../db/data/test-data/users');
 const seed = require("../db/seeds/seed");
-const { forEach } = require('../db/data/test-data/categories');
-const { response } = require('../app');
 
 beforeEach(() => {
     return seed({ categoryData, commentData, reviewData, userData });
