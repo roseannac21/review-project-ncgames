@@ -300,7 +300,7 @@ describe("app tests", () => {
     })
   })
 
-  describe("task 11 delete comment", () => {
+  describe("task 12 delete comment", () => {
     test("status 204", () => {
       return request(app).delete("/api/comments/3").expect(204)
       })
