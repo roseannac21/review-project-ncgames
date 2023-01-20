@@ -6,6 +6,7 @@ const commentData = require('../db/data/test-data/comments');
 const reviewData = require('../db/data/test-data/reviews');
 const userData = require('../db/data/test-data/users');
 const seed = require("../db/seeds/seed");
+const { forEach } = require('../db/data/test-data/categories');
 
 beforeEach(() => {
     return seed({ categoryData, commentData, reviewData, userData });
@@ -39,7 +40,7 @@ describe("app tests", () => {
     })
     test("returns reviews including all properties", () => {
       return request(app).get("/api/reviews/").expect(200).then((response) => {
-        const reviewObjs = response.body.reviews;
+        const reviewObjs = response.body;
         expect(reviewObjs).toHaveLength(13);
         expect(reviewObjs[0]).toEqual({
           review_id: 7,
@@ -250,6 +251,7 @@ describe("app tests", () => {
     })
   })
 
+
   describe("task 11 get comment count by review id", () => {
     test("status 200", () => {
       return request(app).get("/api/reviews/6").expect(200);
@@ -280,5 +282,52 @@ describe("app tests", () => {
         expect(body.msg).toEqual("invalid data type")
         })
       })
+
+  describe("task 10 queries", () => {
+    test("status 200", () => {
+      return request(app).get("/api/reviews?sort_by=created_at&order=desc").expect(200)
+      })
+    test("returns array that fits all query criteria", () => {
+      return request(app).get("/api/reviews?category=dexterity&sort_by=created_at&order=asc").expect(200).then(({body}) => {
+        const [obj] = body
+        expect(obj).toEqual({
+          review_id: 2,
+          title: 'Jenga',
+          category: 'dexterity',
+          designer: 'Leslie Scott',
+          owner: 'philippaclaire9',
+          review_body: 'Fiddly fun for all the family',
+          review_img_url: 'https://images.pexels.com/photos/4473494/pexels-photo-4473494.jpeg?w=700&h=700',
+          created_at: '2021-01-18T10:01:41.251Z',
+          votes: 5,
+          comment_count: '3'
+        })
+      })
+    })
+    test("testing another query", () => {
+      return request(app).get("/api/reviews?category=social+deduction&sort_by=title&order=desc").expect(200).then(({body}) => {
+        expect(body).toHaveLength(11);
+        expect(body[0].title).toBe("Ultimate Werewolf")
+        body.forEach((obj) => {
+          expect(obj.category).toBe("social deduction");
+        })
+      })
+    })
+    test("error handling- 400- invalid sort query", () => {
+      return request(app).get("/api/reviews?category=social+deduction&sort_by=hello&order=desc").expect(400).then(({body}) => {
+        expect(body.msg).toBe("invalid sort query");
+      })
+    })
+    test("error handling- 400- invalid category query", () => {
+      return request(app).get("/api/reviews?category=hello&sort_by=title&order=desc").expect(400).then(({body}) => {
+        expect(body.msg).toBe("invalid category query");
+      })
+    })
+    test("error handling- 400- invalid order query", () => {
+      return request(app).get("/api/reviews?category=dexterity&sort_by=title&order=hello").expect(400).then(({body}) => {
+        expect(body.msg).toBe("invalid order query");
+      })
+    })
+
   })
 })

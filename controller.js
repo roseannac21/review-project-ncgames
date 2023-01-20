@@ -9,12 +9,14 @@ const getCategories = (request, response, next) => {
 };
 
 const getReviews = (request, response, next) => {
-  fetchReviews().then((reviews) => {
-    response.status(200).send({ reviews });
+const { category } = request.query
+const { sort_by } = request.query
+const { order } = request.query
+
+  fetchReviews(sort_by, order, category).then((reviews) => {
+    response.status(200).send({reviews}.reviews);
   })
-    .catch((err) => {
-      console.log(err)
-    });
+    .catch(next);
 };
 
 const getCommentsForReview = (request, response, next) => {
