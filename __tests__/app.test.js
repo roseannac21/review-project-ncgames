@@ -80,8 +80,7 @@ describe("app tests", () => {
     })
     test("review with id number from url is returned", () => {
       return request(app).get("/api/reviews/5/").expect(200).then((response) => {
-        const reviewObj = response.body.review
-        expect(reviewObj).toHaveLength(1);
+        const reviewObj = response.body
         expect.objectContaining({review_id: expect(5), title: expect('Proident tempor et.'), category: expect('social deduction'), designer: expect('Seymour Buttz'), owner: expect('mallionaire'), review_body: expect('Labore occaecat sunt qui commodo anim anim aliqua adipisicing aliquip fugiat. Ad in ipsum incididunt esse amet deserunt aliqua exercitation occaecat nostrud irure labore ipsum. Culpa tempor non voluptate reprehenderit deserunt pariatur cupidatat aliqua adipisicing. Nostrud labore dolor fugiat sint consequat excepteur dolore irure eu. Anim ex adipisicing magna deserunt enim fugiat do nulla officia sint. Ex tempor ut aliquip exercitation eiusmod. Excepteur deserunt officia voluptate sunt aliqua esse deserunt velit. In id non proident veniam ipsum id in consequat duis ipsum et incididunt. Qui cupidatat ea deserunt magna proident nisi nulla eiusmod aliquip magna deserunt fugiat fugiat incididunt. Laboris nisi velit mollit ullamco deserunt eiusmod deserunt ea dolore veniam.'), review_img_url: expect('https://images.pexels.com/photos/209728/pexels-photo-209728.jpeg?w=700&h=700'), created_at: expect('2021-01-07T09:06:08.077Z'), votes: expect(5)})
         })
       })
@@ -300,6 +299,37 @@ describe("app tests", () => {
     })
   })
 
+  describe("task 11 get comment count by review id", () => {
+    test("status 200", () => {
+      return request(app).get("/api/reviews/6").expect(200);
+    })
+    test("review data includes comment_count", () => {
+      return request(app).get("/api/reviews/6").expect(200).then(({body}) => {
+        expect(body).toEqual({
+          review_id: 6,
+          title: 'Occaecat consequat officia in quis commodo.',
+          category: 'social deduction',
+          designer: 'Ollie Tabooger',
+          owner: 'mallionaire',
+          review_body: 'Fugiat fugiat enim officia laborum quis. Aliquip laboris non nulla nostrud magna exercitation in ullamco aute laborum cillum nisi sint. Culpa excepteur aute cillum minim magna fugiat culpa adipisicing eiusmod laborum ipsum fugiat quis. Mollit consectetur amet sunt ex amet tempor magna consequat dolore cillum adipisicing. Proident est sunt amet ipsum magna proident fugiat deserunt mollit officia magna ea pariatur. Ullamco proident in nostrud pariatur. Minim consequat pariatur id pariatur adipisicing.',
+          review_img_url: 'https://images.pexels.com/photos/207924/pexels-photo-207924.jpeg?w=700&h=700',
+          created_at: '2020-09-13T14:19:28.077Z',
+          votes: 8,
+          comment_count: '0'
+        })
+      })
+    })
+    test("error handling- valid data type but review_id doesn't exist", () => {
+      return request(app).get("/api/reviews/999/").expect(404).then(({body}) => {
+        expect(body.msg).toEqual("path not found")
+        })
+      })
+    test("error handling- invalid data type for review_id in url", () => {
+      return request(app).get("/api/reviews/hello/").expect(400).then(({body}) => {
+        expect(body.msg).toEqual("invalid data type")
+        })
+      })
+
   describe("task 12 delete comment", () => {
     test("status 204", () => {
       return request(app).delete("/api/comments/3").expect(204)
@@ -320,6 +350,7 @@ describe("app tests", () => {
         })
       })
     })
+
   })
 
 
