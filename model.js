@@ -116,5 +116,17 @@ const fetchEndpoints = () => {
     })
 }
 
-module.exports = { fetchCategories, fetchReviews, fetchReviewById, fetchCommentsForReview, addNewComment, updateVotes, fetchUsers, fetchEndpoints }
+const deleteGivenComment = (id) => {
+    let queryStr = `DELETE FROM comments WHERE comment_id = $1 RETURNING *;`
+
+    return db.query(queryStr, [id]).then((response) => {
+        if(response.rows.length === 0) {
+            return Promise.reject({status: 404, msg: "invalid comment id"})
+        }
+        return response.rows;
+    })
+}
+
+module.exports = { fetchCategories, fetchReviews, fetchReviewById, fetchCommentsForReview, addNewComment, updateVotes, fetchUsers, deleteGivenComment, fetchEndpoints }
+
 

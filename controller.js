@@ -1,4 +1,4 @@
-const { fetchCategories, fetchReviews, fetchReviewById, addNewComment, fetchCommentsForReview, updateVotes, fetchUsers, fetchEndpoints } = require('./model');
+const { fetchCategories, fetchReviews, fetchReviewById, addNewComment, fetchCommentsForReview, updateVotes, fetchUsers, deleteGivenComment, fetchEndpoints } = require('./model');
 
 const getEndpoints = (request, response, next) => {
 
@@ -84,7 +84,16 @@ const getUsers = (request, response, next) => {
   fetchUsers().then((users) => {
     response.status(200).send({users})
   })
+  .catch(next)
 }
 
-module.exports = { getCategories, getReviews, getReview, getCommentsForReview, postCommentById, patchVotes, getUsers, getEndpoints };
+const deleteComment = (request, response, next) => {
+  const commentToDelete = request.params.comment_id;
 
+  deleteGivenComment(commentToDelete).then(() => {
+    response.status(204).send()
+  })
+  .catch(next)
+}
+
+module.exports = { getCategories, getReviews, getReview, getCommentsForReview, postCommentById, patchVotes, getUsers, deleteComment, getEndpoints };

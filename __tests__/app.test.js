@@ -327,8 +327,29 @@ describe("app tests", () => {
         expect(body.msg).toEqual("invalid data type")
         })
       })
-    })
+    }) 
 
+  describe("task 12 delete comment", () => {
+    test("status 204", () => {
+      return request(app).delete("/api/comments/3").expect(204)
+      })
+      test("deletion is successful", () => {
+        return request(app).delete("/api/comments/3").expect(204).then(({body}) => {
+          expect(body).toEqual({});
+        })
+      })
+      test("error handling- 404- id number doesnt exist", () => {
+        return request(app).delete("/api/comments/9999").expect(404).then(({body}) => {
+          expect(body.msg).toBe("invalid comment id")
+        })
+      })
+      test("error handling- 400- invalid path", () => {
+        return request(app).delete("/api/comments/hello").expect(400).then(({body}) => {
+          expect(body.msg).toBe("invalid data type")
+        })
+      })
+    })
+    
     describe("task 13 get api", () => {
       test("status 200", () => {
         return request(app).get("/api").expect(200);
@@ -339,4 +360,5 @@ describe("app tests", () => {
         })
       })
     })
-})
+    
+  })
