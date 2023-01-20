@@ -1,7 +1,7 @@
 const db = require("./db/connection");
 const express = require("express");
 const app = express();
-const { getCategories, getReviews, getReview, postCommentById, getCommentsForReview, patchVotes } = require('./controller')
+const { getCategories, getReviews, getReview, postCommentById, getCommentsForReview, patchVotes, getUsers } = require('./controller')
 
 app.use(express.json());
 
@@ -19,7 +19,9 @@ app.post("/api/reviews/:review_id/comments", postCommentById);
 
 app.get("/api/reviews/:review_id/comments/", getCommentsForReview);
 
-app.patch("/api/reviews/:review_id", patchVotes)
+app.patch("/api/reviews/:review_id", patchVotes);
+
+app.get("/api/users/", getUsers);
 
 
 //ERROR HANDLING
@@ -46,6 +48,12 @@ app.use((err, req, res, next) => {
 app.use((err, req, res, next) => {
   if (err.status && err.msg) {
     res.status(err.status).send({msg: err.msg});
+  }
+})
+
+app.use((err, req, res, next) => {
+  if (err) {
+    console.log(err)
   }
 })
 
