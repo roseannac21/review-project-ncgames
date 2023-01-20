@@ -349,5 +349,16 @@ describe("app tests", () => {
         })
       })
     })
+    
+    describe("task 13 get api", () => {
+      test("status 200", () => {
+        return request(app).get("/api").expect(200);
+      })
+      test("returns json file of all endpoints", () => {
+        return request(app).get("/api").expect(200).then(({body}) => {
+          expect.objectContaining("GET /api", "GET /api/categories", "GET /api/reviews", "GET /api/reviews/:review_id", "POST /api/reviews/:review_id/comments", "GET /api/reviews/:review_id/comments/", "PATCH /api/reviews/:review_id", "GET /api/users")
+        })
+      })
+    })
+    
   })
-

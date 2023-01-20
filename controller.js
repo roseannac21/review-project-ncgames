@@ -1,4 +1,11 @@
-const { fetchCategories, fetchReviews, fetchReviewById, addNewComment, fetchCommentsForReview, updateVotes, fetchUsers, deleteGivenComment } = require('./model');
+const { fetchCategories, fetchReviews, fetchReviewById, addNewComment, fetchCommentsForReview, updateVotes, fetchUsers, deleteGivenComment, fetchEndpoints } = require('./model');
+
+const getEndpoints = (request, response, next) => {
+
+  fetchEndpoints().then((file) => {
+    response.status(200).send({file});
+  })
+}
 
 const getCategories = (request, response, next) => {
 
@@ -9,9 +16,7 @@ const getCategories = (request, response, next) => {
 };
 
 const getReviews = (request, response, next) => {
-const { category } = request.query
-const { sort_by } = request.query
-const { order } = request.query
+const { category, sort_by, order } = request.query
 
   fetchReviews(sort_by, order, category).then((reviews) => {
     response.status(200).send({reviews}.reviews);
@@ -91,5 +96,4 @@ const deleteComment = (request, response, next) => {
   .catch(next)
 }
 
-module.exports = { getCategories, getReviews, getReview, getCommentsForReview, postCommentById, patchVotes, getUsers, deleteComment };
-
+module.exports = { getCategories, getReviews, getReview, getCommentsForReview, postCommentById, patchVotes, getUsers, deleteComment, getEndpoints };

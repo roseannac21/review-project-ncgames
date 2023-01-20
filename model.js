@@ -1,4 +1,5 @@
 const db = require("./db/connection");
+const fs = require("fs.promises")
 
 const fetchCategories = () => {
     let queryStr = `SELECT * FROM categories;`
@@ -106,6 +107,15 @@ const fetchUsers = () => {
     })
 }
 
+const fetchEndpoints = () => {
+
+    return fs.readFile("./endpoints.json", "utf-8")
+    .then((endpointsFile) => {
+        const parsedFile = JSON.parse(endpointsFile)
+        return parsedFile;
+    })
+}
+
 const deleteGivenComment = (id) => {
     let queryStr = `DELETE FROM comments WHERE comment_id = $1 RETURNING *;`
 
@@ -117,5 +127,6 @@ const deleteGivenComment = (id) => {
     })
 }
 
-module.exports = { fetchCategories, fetchReviews, fetchReviewById, fetchCommentsForReview, addNewComment, updateVotes, fetchUsers, deleteGivenComment }
+module.exports = { fetchCategories, fetchReviews, fetchReviewById, fetchCommentsForReview, addNewComment, updateVotes, fetchUsers, deleteGivenComment, fetchEndpoints }
+
 
