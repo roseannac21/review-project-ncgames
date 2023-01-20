@@ -329,6 +329,7 @@ describe("app tests", () => {
         expect(body.msg).toEqual("invalid data type")
         })
       })
+    }) 
 
   describe("task 12 delete comment", () => {
     test("status 204", () => {
@@ -350,7 +351,5 @@ describe("app tests", () => {
         })
       })
     })
-
   })
-
 
