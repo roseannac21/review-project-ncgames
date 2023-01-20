@@ -250,7 +250,7 @@ describe("app tests", () => {
     })
   })
 
-  describe.only("task 11 get comment count by review id", () => {
+  describe("task 11 get comment count by review id", () => {
     test("status 200", () => {
       return request(app).get("/api/reviews/6").expect(200);
     })
