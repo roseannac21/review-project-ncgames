@@ -38,7 +38,9 @@ const getReview = (request, response, next) => {
     if (review.length === 0) {
       next();
     }
-    response.status(200).send({ review });
+    const reviewInObj = {review}.review
+    const [reviewObj] = reviewInObj
+    response.status(200).send(reviewObj);
   })
   .catch(next)
 };

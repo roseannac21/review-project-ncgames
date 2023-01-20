@@ -22,9 +22,16 @@ const fetchReviews = () => {
 }
 
 const fetchReviewById = (id) => {
-   let queryStr = `SELECT * FROM reviews WHERE review_id = ${id};`
+   let queryStr = `SELECT reviews.*, 
+    COUNT(comments.comment_id) AS comment_count
+    FROM reviews
+    LEFT JOIN comments 
+    ON reviews.review_id = comments.review_id
+    WHERE reviews.review_id = $1
+    GROUP BY reviews.review_id
+    ORDER BY created_at DESC;`
 
-    return db.query(queryStr).then(({rows}) => {
+    return db.query(queryStr, [id]).then(({rows}) => {
         return rows;
     })
 }
