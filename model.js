@@ -1,4 +1,5 @@
 const db = require("./db/connection");
+const fs = require("fs.promises")
 
 const fetchCategories = () => {
     let queryStr = `SELECT * FROM categories;`
@@ -106,5 +107,14 @@ const fetchUsers = () => {
     })
 }
 
-module.exports = { fetchCategories, fetchReviews, fetchReviewById, fetchCommentsForReview, addNewComment, updateVotes, fetchUsers }
+const fetchEndpoints = () => {
+
+    return fs.readFile("./endpoints.json", "utf-8")
+    .then((endpointsFile) => {
+        const parsedFile = JSON.parse(endpointsFile)
+        return parsedFile;
+    })
+}
+
+module.exports = { fetchCategories, fetchReviews, fetchReviewById, fetchCommentsForReview, addNewComment, updateVotes, fetchUsers, fetchEndpoints }
 

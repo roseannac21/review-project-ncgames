@@ -6,7 +6,6 @@ const commentData = require('../db/data/test-data/comments');
 const reviewData = require('../db/data/test-data/reviews');
 const userData = require('../db/data/test-data/users');
 const seed = require("../db/seeds/seed");
-const { forEach } = require('../db/data/test-data/categories');
 
 beforeEach(() => {
     return seed({ categoryData, commentData, reviewData, userData });
@@ -251,38 +250,6 @@ describe("app tests", () => {
     })
   })
 
-
-  describe("task 11 get comment count by review id", () => {
-    test("status 200", () => {
-      return request(app).get("/api/reviews/6").expect(200);
-    })
-    test("review data includes comment_count", () => {
-      return request(app).get("/api/reviews/6").expect(200).then(({body}) => {
-        expect(body).toEqual({
-          review_id: 6,
-          title: 'Occaecat consequat officia in quis commodo.',
-          category: 'social deduction',
-          designer: 'Ollie Tabooger',
-          owner: 'mallionaire',
-          review_body: 'Fugiat fugiat enim officia laborum quis. Aliquip laboris non nulla nostrud magna exercitation in ullamco aute laborum cillum nisi sint. Culpa excepteur aute cillum minim magna fugiat culpa adipisicing eiusmod laborum ipsum fugiat quis. Mollit consectetur amet sunt ex amet tempor magna consequat dolore cillum adipisicing. Proident est sunt amet ipsum magna proident fugiat deserunt mollit officia magna ea pariatur. Ullamco proident in nostrud pariatur. Minim consequat pariatur id pariatur adipisicing.',
-          review_img_url: 'https://images.pexels.com/photos/207924/pexels-photo-207924.jpeg?w=700&h=700',
-          created_at: '2020-09-13T14:19:28.077Z',
-          votes: 8,
-          comment_count: '0'
-        })
-      })
-    })
-    test("error handling- valid data type but review_id doesn't exist", () => {
-      return request(app).get("/api/reviews/999/").expect(404).then(({body}) => {
-        expect(body.msg).toEqual("path not found")
-        })
-      })
-    test("error handling- invalid data type for review_id in url", () => {
-      return request(app).get("/api/reviews/hello/").expect(400).then(({body}) => {
-        expect(body.msg).toEqual("invalid data type")
-        })
-      })
-
   describe("task 10 queries", () => {
     test("status 200", () => {
       return request(app).get("/api/reviews?sort_by=created_at&order=desc").expect(200)
@@ -328,6 +295,48 @@ describe("app tests", () => {
         expect(body.msg).toBe("invalid order query");
       })
     })
-
   })
+
+  describe("task 11 get comment count by review id", () => {
+    test("status 200", () => {
+      return request(app).get("/api/reviews/6").expect(200);
+    })
+    test("review data includes comment_count", () => {
+      return request(app).get("/api/reviews/6").expect(200).then(({body}) => {
+        expect(body).toEqual({
+          review_id: 6,
+          title: 'Occaecat consequat officia in quis commodo.',
+          category: 'social deduction',
+          designer: 'Ollie Tabooger',
+          owner: 'mallionaire',
+          review_body: 'Fugiat fugiat enim officia laborum quis. Aliquip laboris non nulla nostrud magna exercitation in ullamco aute laborum cillum nisi sint. Culpa excepteur aute cillum minim magna fugiat culpa adipisicing eiusmod laborum ipsum fugiat quis. Mollit consectetur amet sunt ex amet tempor magna consequat dolore cillum adipisicing. Proident est sunt amet ipsum magna proident fugiat deserunt mollit officia magna ea pariatur. Ullamco proident in nostrud pariatur. Minim consequat pariatur id pariatur adipisicing.',
+          review_img_url: 'https://images.pexels.com/photos/207924/pexels-photo-207924.jpeg?w=700&h=700',
+          created_at: '2020-09-13T14:19:28.077Z',
+          votes: 8,
+          comment_count: '0'
+        })
+      })
+    })
+    test("error handling- valid data type but review_id doesn't exist", () => {
+      return request(app).get("/api/reviews/999/").expect(404).then(({body}) => {
+        expect(body.msg).toEqual("path not found")
+        })
+      })
+    test("error handling- invalid data type for review_id in url", () => {
+      return request(app).get("/api/reviews/hello/").expect(400).then(({body}) => {
+        expect(body.msg).toEqual("invalid data type")
+        })
+      })
+    })
+
+    describe("task 13 get api", () => {
+      test("status 200", () => {
+        return request(app).get("/api").expect(200);
+      })
+      test("returns json file of all endpoints", () => {
+        return request(app).get("/api").expect(200).then(({body}) => {
+          expect.objectContaining("GET /api", "GET /api/categories", "GET /api/reviews", "GET /api/reviews/:review_id", "POST /api/reviews/:review_id/comments", "GET /api/reviews/:review_id/comments/", "PATCH /api/reviews/:review_id", "GET /api/users")
+        })
+      })
+    })
 })
