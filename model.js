@@ -8,17 +8,48 @@ const fetchCategories = () => {
     })
 }
 
-const fetchReviews = () => {
-    let queryStr = `SELECT reviews.*, COUNT(comments.comment_id) AS comment_count
+const fetchReviews = (sort_by = "created_at", order = "desc", category) => {
+
+    if (!["title", "designer", "owner", "review_img_url", "review_body", "category", "created_at", "votes", "comment_count"].includes(sort_by)) {
+        return Promise.reject({status: 400, msg: "invalid sort query"})
+      };
+
+    if (order !== undefined && !["desc", "asc"].includes(order)) {
+        return Promise.reject({status: 400, msg: "invalid order query"})
+      };
+
+    if (category !== undefined && !["social deduction", "dexterity", "strategy", "hidden-roles", "push-you-luck", "deck-building", "engine-building", "roll-and-write"].includes(category)) {
+        return Promise.reject({status: 400, msg: "invalid category query"})
+      };
+
+    const queryStr = `SELECT reviews.*, COUNT(comments.comment_id) AS comment_count
     FROM reviews
     LEFT JOIN comments 
-    ON reviews.review_id = comments.review_id
-    GROUP BY reviews.review_id
-    ORDER BY created_at DESC;`
+    ON reviews.review_id = comments.review_id`
 
-    return db.query(queryStr).then((result) => {
+    if (category === undefined) {
+
+        const queryAddition = ` GROUP BY reviews.review_id
+            ORDER BY ${sort_by} ${order};`
+        
+        const finalQuery = queryStr.concat(queryAddition)
+
+        return db.query(finalQuery).then((result) => {
+            return result.rows;
+    })
+
+    } else {
+
+        const queryAddition = ` WHERE category = $1
+        GROUP BY reviews.review_id
+        ORDER BY ${sort_by} ${order};`
+
+        const finalQuery = queryStr.concat(queryAddition)
+    
+    return db.query(finalQuery, [category]).then((result) => {
         return result.rows;
     })
+}
 }
 
 const fetchReviewById = (id) => {
